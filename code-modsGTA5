@@ -1,0 +1,226 @@
+@echo off
+color 3
+echo Chargement
+title Initialisation...
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/code-modsGTA5', 'modsGTA5.bat')"
+ping 0 -n 1 >nul
+if not exist modsGTA5-repertoire.txt (
+	echo "" >modsGTA5-repertoire.txt
+)
+set /p checkrepertoire= < modsGTA5-repertoire.txt
+if %checkrepertoire%=="" goto repertoirenotset
+
+:checkloader
+color 03
+set /p repertoire= < modsGTA5-repertoire.txt
+if not exist %repertoire%\ScriptHookV.dll (
+	if not exist %repertoire%\ScriptHookVoff.dll goto noloader
+)
+if not exist %repertoire%\ScriptHookVoff.dll (
+	if not exist %repertoire%\ScriptHookV.dll goto noloader
+)
+:deb
+chcp 65001
+cls
+color 03
+set version=1.5.0
+title Programme de gestion des mods GTA5 by Cyril59310 V%version%
+set /p repertoire= < modsGTA5-repertoire.txt
+if exist %repertoire%\ScriptHookV.dll (
+	set statusmods=Activer
+) else ( set statusmods=désactiver)
+set /p vjeux= < %repertoire%\version.txt
+echo.
+echo Programme de gestion des mods GTA5 by Cyril59310 V%version%
+echo.
+echo Status des mods: %statusmods%
+echo Repertoire d'installation: %repertoire%
+echo version actuelle du jeux: %vjeux%
+echo.
+echo -  0 = Ferme le programme.
+echo -  1 = Active les mods GTA5.
+echo -  2 = Désactive les mods GTA5.
+echo -  3 = Redirige sur le site dev-c.com pour télécharger la dernière version de ScriptHookV.
+echo -  4 = Update manuellement les fichiers ScriptHookV et dinput8.
+echo -  5 = Change le répertoire d'installation de votre GTA5.
+echo -  6 = Lance le jeux GTA5.
+echo -  7 = Ouvre le repertoire d'installation de GTA5.
+echo.
+set /a command=99
+set /p command=Choix: 
+if %command%==0 exit
+if %command%==1 goto checkA
+if %command%==2 goto checkB
+if %command%==3 goto download
+if %command%==4 goto update
+if %command%==5 goto repertoirenotset
+if %command%==6 goto launch
+if %command%==7 goto opendir
+if %command%==99 goto checkcom
+echo.
+echo choix incorrect
+ping 0 -n 2 >nul
+goto deb
+
+:checkcom
+echo.
+echo Préciser un choix !
+ping 0 -n 2 >nul
+goto deb
+
+:checkA
+if exist %repertoire%\ScriptHookV.dll (
+	goto errorA	
+) else ( goto 1)
+
+:checkB
+if exist %repertoire%\ScriptHookVoff.dll (
+	goto errorB
+) else ( goto 2)
+
+:errorA
+cls
+echo.
+echo ATTENTION les mods sont déjà activé !
+pause
+goto deb  
+
+:errorB
+cls
+echo.
+echo ATTENTION les mods sont déjà désactiver !
+pause
+goto deb
+
+:1
+cls
+if exist %repertoire%\ScriptHookVoff.dll (
+    echo.
+    echo Activation des mods...
+    rename %repertoire%\ScriptHookVoff.dll ScriptHookV.dll
+    rename %repertoire%\dinput8off.dll dinput8.dll
+    ping 0 -n 1 >nul
+    echo.
+    echo Mods activé
+    ping 0 -n 1 >nul
+    pause
+    goto deb
+) else (
+	echo.
+	echo Le loader scripthookV n'es pas intaller !
+	pause
+	goto deb
+)
+
+:2
+cls
+if exist %repertoire%\scripthookV.dll (
+    echo.
+    echo désactivation des mods...
+    rename %repertoire%\ScriptHookV.dll ScriptHookVoff.dll
+    rename %repertoire%\dinput8.dll dinput8off.dll
+    ping 0 -n 1 >nul
+    echo.
+    echo Mods désactiver
+    ping 0 -n 1 >nul
+    pause
+    goto deb
+) else (
+	echo.
+	echo Le loader scripthookV n'es pas intaller !
+	pause
+	goto deb
+)
+
+:download
+start http://www.dev-c.com/gtav/scripthookv/
+pause
+goto deb
+
+:update
+cls
+echo.
+echo Suppression des anciens fichiers mods loader...
+if exist %repertoire%\ScriptHookV.dll (
+	del %repertoire%\ScriptHookV.dll 
+)
+if exist %repertoire%\dinput8.dll (
+	del %repertoire%\dinput8.dll 
+)
+if exist %repertoire%\ScriptHookVoff.dll (
+	del %repertoire%\ScriptHookVoff.dll 
+)
+if exist %repertoire%\dinput8off.dll (
+	del %repertoire%\dinput8off.dll 
+)
+ping 0 -n 3 >nul
+echo.
+echo Fichiers supprimés
+echo Ouverture du répertoire d'installation...
+echo.
+:opendir
+explorer %repertoire%
+pause
+goto deb
+
+:repertoirenotset
+chcp 65001
+cls
+color 4f
+echo.
+attrib -H modsGTA5-repertoire.txt
+echo Reperoire GTA5 non initialisé...
+echo merci de spécifier le dossier d'installation de votre jeux GTA5
+echo.
+set repertoire=
+set /p repertoire=Reperoire d'installation: 
+if "%repertoire%"=="" (
+	echo.
+	echo veuillez specifier un répertoire !
+	pause
+	goto repertoirenotset
+)
+if exist %repertoire%\PlayGTAV.exe (
+	cls
+	echo.
+	color 2f
+	echo Reperoire d'installation initialisé sur: %repertoire%
+	echo "%repertoire%"> modsGTA5-repertoire.txt
+	pause
+	attrib +H modsGTA5-repertoire.txt
+	goto checkloader
+)else (
+	echo.
+	echo Impossible de trouver l'installation de GTA5 dans ce répertoire !
+	echo veuillez vérifier le chemin d'accès.
+	pause
+	goto repertoirenotset
+)
+
+:launch
+cls
+echo.
+echo Lancement de GTA5...
+start /D %repertoire% PlayGTAV.exe
+echo fermeture du programme
+ping 0 -n 2 >nul
+exit
+
+:noloader
+chcp 65001
+cls
+echo.
+echo ATTENTION le loader scripthookV ne semble pas installer !
+echo sans ce loader vous ne pourrez pas lancer vos mods 
+echo ou profiter pleinement de ce programme.
+echo.
+echo voulez vous le télécharger ?
+echo.
+set /a loaderchoix=...
+set /p loaderchoix=Choix (y/n): 
+if %loaderchoix%==y goto download
+if %loaderchoix%==n goto deb
+echo.
+echo Choix incorrect !
+ping 0 -n 2 >nul
+goto noloader
