@@ -1,8 +1,13 @@
 @echo off
 color 3
 echo Chargement
-title Initialisation...
-powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/code-modsGTA5', 'modsGTA5.bat')"
+title Verification des mises a jours...
+set version=1.6.0
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/version', 'versionmodsGTA5')"
+set /p verifversion= < versionmodsGTA5
+if %verifversion% NEQ %version% goto verifmaj
+:load
+del versionmodsGTA5
 ping 0 -n 1 >nul
 if not exist modsGTA5-repertoire.txt (
 	echo "" >modsGTA5-repertoire.txt
@@ -23,7 +28,6 @@ if not exist %repertoire%\ScriptHookVoff.dll (
 chcp 65001
 cls
 color 03
-set version=1.5.0
 title Programme de gestion des mods GTA5 by Cyril59310 V%version%
 set /p repertoire= < modsGTA5-repertoire.txt
 if exist %repertoire%\ScriptHookV.dll (
@@ -224,3 +228,18 @@ echo.
 echo Choix incorrect !
 ping 0 -n 2 >nul
 goto noloader
+
+:verifmaj
+cls
+echo.
+echo Une nouvelle mise a jour est disponible,
+echo.
+echo Version actuelle: %version%
+echo Nouvelle version: %verifversion%
+set /a tempverif=...
+set /p tempverif=voulez vous la telecharger ? (y/n): 
+if %tempverif%==y powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/dev/code-modsGTA5', 'modsGTA5.bat')"
+if %tempverif%==n goto load
+echo Choix incorrect !
+ping 0 -n 2 >nul
+goto verifmaj
