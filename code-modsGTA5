@@ -29,6 +29,7 @@ if not exist %repertoire%\ScriptHookVoff.dll (
 chcp 65001
 cls
 color 03
+set version=%version%
 title Programme de gestion des mods GTA5 by Cyril59310 V%version%
 set /p repertoire= < modsGTA5-repertoire.txt
 if exist %repertoire%\ScriptHookV.dll (
