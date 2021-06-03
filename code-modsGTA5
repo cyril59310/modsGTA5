@@ -1,8 +1,9 @@
 @echo off
 color 3
 echo Chargement
+if exist modsGTA5.init.bat del modsGTA5.init.bat
 title Verification des mises a jours...
-set version=1.6.0
+set version=1.6.1
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/version', 'versionmodsGTA5')"
 set /p verifversion= < versionmodsGTA5
 if %verifversion% NEQ %version% goto verifmaj
@@ -238,7 +239,7 @@ echo Version actuelle: %version%
 echo Nouvelle version: %verifversion%
 set /a tempverif=...
 set /p tempverif=voulez vous la telecharger ? (y/n): 
-if %tempverif%==y powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/dev/code-modsGTA5', 'modsGTA5.bat')"
+if %tempverif%==y powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/code-modsGTA5', 'modsGTA5.bat')" & goto load
 if %tempverif%==n goto load
 echo Choix incorrect !
 ping 0 -n 2 >nul
