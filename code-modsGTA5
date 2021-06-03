@@ -239,7 +239,7 @@ echo Version actuelle: %version%
 echo Nouvelle version: %verifversion%
 set /a tempverif=...
 set /p tempverif=voulez vous la telecharger ? (y/n): 
-if %tempverif%==y powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/code-modsGTA5', 'modsGTA5.bat')" & goto load
+if %tempverif%==y powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/code-modsGTA5', 'modsGTA5.bat')" & call modsGTA5.bat
 if %tempverif%==n goto load
 echo Choix incorrect !
 ping 0 -n 2 >nul
