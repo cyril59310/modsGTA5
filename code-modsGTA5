@@ -249,4 +249,4 @@ if %tempverif%==y powershell -Command "(New-Object Net.WebClient).DownloadFile('
 if %tempverif%==n goto load
 echo Choix incorrect !
 ping 0 -n 2 >nul
-goto verifmaj
+goto verifmaj 
