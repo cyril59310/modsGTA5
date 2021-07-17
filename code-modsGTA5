@@ -3,12 +3,12 @@ color 3
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
 title Verification des mises a jours...
-set version=1.6.1
+set version=1.6.2
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/version', 'versionmodsGTA5')"
 set /p verifversion= < versionmodsGTA5
 if %verifversion% NEQ %version% goto verifmaj
 :load
-del versionmodsGTA5
+if exist versionmodsGTA5 del versionmodsGTA5
 ping 0 -n 1 >nul
 if not exist modsGTA5-repertoire.txt (
 	echo "" >modsGTA5-repertoire.txt
@@ -25,6 +25,7 @@ if not exist %repertoire%\ScriptHookV.dll (
 if not exist %repertoire%\ScriptHookVoff.dll (
 	if not exist %repertoire%\ScriptHookV.dll goto noloader
 )
+
 :deb
 chcp 65001
 cls
@@ -34,7 +35,10 @@ title Programme de gestion des mods GTA5 by Cyril59310 V%version%
 set /p repertoire= < modsGTA5-repertoire.txt
 if exist %repertoire%\ScriptHookV.dll (
 	set statusmods=Activer
-) else ( set statusmods=désactiver)
+) else if exist %repertoire%\ScriptHookVoff.dll ( 
+	      set statusmods=désactiver
+) else set statusmods=Inconnue
+
 set /p vjeux= < %repertoire%\version.txt
 echo.
 echo Programme de gestion des mods GTA5 by Cyril59310 V%version%
@@ -213,6 +217,7 @@ ping 0 -n 2 >nul
 exit
 
 :noloader
+color c
 chcp 65001
 cls
 echo.
