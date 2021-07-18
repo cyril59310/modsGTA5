@@ -1,9 +1,9 @@
 @echo off
-color 3
+color 
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
 title Verification des mises a jours...
-set version=1.6.2
+set version=1.6.3
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/version', 'versionmodsGTA5')"
 set /p verifversion= < versionmodsGTA5
 if %verifversion% NEQ %version% goto verifmaj
@@ -90,6 +90,7 @@ if exist %repertoire%\ScriptHookVoff.dll (
 
 :errorA
 cls
+color c
 echo.
 echo ATTENTION les mods sont déjà activé !
 pause
@@ -97,6 +98,7 @@ goto deb
 
 :errorB
 cls
+color c
 echo.
 echo ATTENTION les mods sont déjà désactiver !
 pause
@@ -111,11 +113,13 @@ if exist %repertoire%\ScriptHookVoff.dll (
     rename %repertoire%\dinput8off.dll dinput8.dll
     ping 0 -n 1 >nul
     echo.
-    echo Mods activé
+	 color 2
+    echo les mods on était activé !
     ping 0 -n 1 >nul
     pause
     goto deb
 ) else (
+	color c
 	echo.
 	echo Le loader scripthookV n'es pas intaller !
 	pause
@@ -131,11 +135,13 @@ if exist %repertoire%\scripthookV.dll (
     rename %repertoire%\dinput8.dll dinput8off.dll
     ping 0 -n 1 >nul
     echo.
-    echo Mods désactiver
+	 color 2
+    echo les mods on était désactivé !
     ping 0 -n 1 >nul
     pause
     goto deb
 ) else (
+	color c
 	echo.
 	echo Le loader scripthookV n'es pas intaller !
 	pause
@@ -165,6 +171,7 @@ if exist %repertoire%\dinput8off.dll (
 )
 ping 0 -n 3 >nul
 echo.
+color 2
 echo Fichiers supprimés
 echo Ouverture du répertoire d'installation...
 echo.
@@ -176,7 +183,7 @@ goto deb
 :repertoirenotset
 chcp 65001
 cls
-color 4f
+color 4
 echo.
 attrib -H modsGTA5-repertoire.txt
 echo Reperoire GTA5 non initialisé...
@@ -193,7 +200,7 @@ if "%repertoire%"=="" (
 if exist %repertoire%\PlayGTAV.exe (
 	cls
 	echo.
-	color 2f
+	color 2
 	echo Reperoire d'installation initialisé sur: %repertoire%
 	echo "%repertoire%"> modsGTA5-repertoire.txt
 	pause
@@ -240,9 +247,9 @@ goto noloader
 cls
 echo.
 echo Une nouvelle mise a jour est disponible,
+echo    Version actuelle: %version%
+echo    Nouvelle version: %verifversion%
 echo.
-echo Version actuelle: %version%
-echo Nouvelle version: %verifversion%
 set /a tempverif=...
 set /p tempverif=voulez vous la telecharger ? (y/n): 
 if %tempverif%==y powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/code-modsGTA5', 'modsGTA5.bat')" & call modsGTA5.bat
