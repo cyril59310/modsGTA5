@@ -3,7 +3,7 @@ color
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
 title Verification des mises a jours...
-set version=1.6.3
+set version=1.6.4
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/version', 'versionmodsGTA5')"
 set /p verifversion= < versionmodsGTA5
 if %verifversion% NEQ %version% goto verifmaj
@@ -149,29 +149,42 @@ if exist %repertoire%\scripthookV.dll (
 )
 
 :download
+cls
+color 3
+echo.
+echo Ouverture d'une page internet... (dev-c.com/scripthookv)
 start http://www.dev-c.com/gtav/scripthookv/
-pause
-goto deb
+echo.
+echo.
+set /a vtemp=...
+set /p vtemp=Voulez vous ouvrir le dossier d'installation ? (y/n): 
+if %vtemp%==y goto opendir
+if %vtemp%==n goto deb
 
 :update
 cls
 echo.
 echo Suppression des anciens fichiers mods loader...
+echo.
+ping 0 -n 3 >nul
+color 2
 if exist %repertoire%\ScriptHookV.dll (
-	del %repertoire%\ScriptHookV.dll 
+	del %repertoire%\ScriptHookV.dll
+	echo ScriptHookV.dll supprimer !
 )
 if exist %repertoire%\dinput8.dll (
 	del %repertoire%\dinput8.dll 
+	echo dinput8.dll supprimer !
 )
 if exist %repertoire%\ScriptHookVoff.dll (
-	del %repertoire%\ScriptHookVoff.dll 
+	del %repertoire%\ScriptHookVoff.dll
+	echo ScriptHookVoff.dll supprimer ! 
 )
 if exist %repertoire%\dinput8off.dll (
-	del %repertoire%\dinput8off.dll 
+	del %repertoire%\dinput8off.dll
+	echo dinput8off.dll supprimer ! 
 )
-ping 0 -n 3 >nul
 echo.
-color 2
 echo Fichiers supprimés
 echo Ouverture du répertoire d'installation...
 echo.
@@ -206,7 +219,7 @@ if exist %repertoire%\PlayGTAV.exe (
 	pause
 	attrib +H modsGTA5-repertoire.txt
 	goto checkloader
-)else (
+) else (
 	echo.
 	echo Impossible de trouver l'installation de GTA5 dans ce répertoire !
 	echo veuillez vérifier le chemin d'accès.
