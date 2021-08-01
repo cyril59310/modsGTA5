@@ -2,8 +2,17 @@
 color 
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-title Verification des mises a jours...
 set version=1.6.4
+echo.
+echo Teste de la connexion a internet...
+ping google.fr -n 2 >nul
+if %ERRORLEVEL%==1 (
+	echo Aucune connexion a internet...
+	echo mise a jours impossible
+	pause
+	goto load
+)
+title Verification des mises a jours...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/version', 'versionmodsGTA5')"
 set /p verifversion= < versionmodsGTA5
 if %verifversion% NEQ %version% goto verifmaj
@@ -199,11 +208,11 @@ cls
 color 4
 echo.
 attrib -H modsGTA5-repertoire.txt
-echo Reperoire GTA5 non initialisé...
+echo Repertoire GTA5 non initialisé...
 echo merci de spécifier le dossier d'installation de votre jeux GTA5
 echo.
 set repertoire=
-set /p repertoire=Reperoire d'installation: 
+set /p repertoire=Repertoire d'installation: 
 if "%repertoire%"=="" (
 	echo.
 	echo veuillez specifier un répertoire !
@@ -214,7 +223,7 @@ if exist %repertoire%\PlayGTAV.exe (
 	cls
 	echo.
 	color 2
-	echo Reperoire d'installation initialisé sur: %repertoire%
+	echo Repertoire d'installation initialisé sur: %repertoire%
 	echo "%repertoire%"> modsGTA5-repertoire.txt
 	pause
 	attrib +H modsGTA5-repertoire.txt
