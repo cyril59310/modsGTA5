@@ -2,8 +2,9 @@
 color 
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-set version=1.6.5
+set version=1.6.5-b
 echo.
+title Connexion a internet...
 echo Teste de la connexion a internet...
 ping google.fr -n 2 >nul
 if %ERRORLEVEL%==1 (
