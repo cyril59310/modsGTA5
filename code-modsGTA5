@@ -2,7 +2,7 @@
 color 
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-set version=1.6.5-b
+set version=1.6.5-c
 echo.
 title Connexion a internet...
 echo Teste de la connexion a internet...
@@ -17,7 +17,9 @@ title Verification des mises a jours...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/version', 'versionmodsGTA5')"
 set /p verifversion= < versionmodsGTA5
 if %verifversion% NEQ %version% goto verifmaj
+
 :load
+cls
 if exist versionmodsGTA5 del versionmodsGTA5
 ping 0 -n 1 >nul
 if not exist modsGTA5-repertoire.txt (
