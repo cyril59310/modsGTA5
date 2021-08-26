@@ -2,7 +2,7 @@
 color 
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-set version=1.6.5-c
+set version=1.6.6
 echo.
 title Connexion a internet...
 echo Teste de la connexion a internet...
@@ -67,6 +67,7 @@ echo -  4 = Update manuellement les fichiers ScriptHookV et dinput8.
 echo -  5 = Change le répertoire d'installation de votre GTA5.
 echo -  6 = Lance le jeux GTA5.
 echo -  7 = Ouvre le repertoire d'installation de GTA5.
+echo -  8 = liste les different sites fiable pour telecharger des mods GTA5
 echo.
 set /a command=99
 set /p command=Choix: 
@@ -78,9 +79,10 @@ if %command%==4 goto update
 if %command%==5 goto repertoirenotset
 if %command%==6 goto launch
 if %command%==7 goto opendir
+if %command%==8 goto dlmods
 if %command%==99 goto checkcom
 echo.
-echo choix incorrect
+echo choix incorrecte
 ping 0 -n 2 >nul
 goto deb
 
@@ -208,6 +210,7 @@ goto deb
 :repertoirenotset
 chcp 65001
 cls
+title initialisation du repertoire...
 color 4
 echo.
 attrib -H modsGTA5-repertoire.txt
@@ -249,6 +252,7 @@ ping 0 -n 2 >nul
 exit
 
 :noloader
+title ScriptHookV non detecter !
 color c
 chcp 65001
 cls
@@ -264,12 +268,34 @@ set /p loaderchoix=Choix (y/n):
 if %loaderchoix%==y goto download
 if %loaderchoix%==n goto deb
 echo.
-echo Choix incorrect !
+echo Choix incorrecte !
 ping 0 -n 2 >nul
 goto noloader
 
+:dlmods
+cls
+echo.
+echo Listes des sites pour telecharger des mods GTA5
+echo.
+echo - 0 = retour a l'accueil du programme
+echo - 1 = gta5-mods
+echo - 2 = grandtheftauto5
+echo - 3 = gtamodding
+echo.
+set /a tempo=99
+set /p tempo=Sur quel site voulez-vous allez ?: 
+if %tempo%==0 goto deb
+if %tempo%==1 start https://fr.gta5-mods.com/ & goto deb
+if %tempo%==2 start https://www.grandtheftauto5.fr/telechargements/mods/ & goto deb
+if %tempo%==3 start http://www.gtamodding.fr/ & goto deb
+echo.
+echo Choix incorrecte
+ping 0 -n 2 >nul
+goto dlmods
+
 :verifmaj
 cls
+title Nouvelle mise a jour disponible :)
 echo.
 echo Une nouvelle mise a jour est disponible,
 echo    Version actuelle: %version%
@@ -279,6 +305,6 @@ set /a tempverif=...
 set /p tempverif=voulez vous la telecharger ? (y/n): 
 if %tempverif%==y powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/code-modsGTA5', 'modsGTA5.bat')" & call modsGTA5.bat
 if %tempverif%==n goto load
-echo Choix incorrect !
+echo Choix incorrecte !
 ping 0 -n 2 >nul
 goto verifmaj 
