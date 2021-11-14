@@ -69,6 +69,7 @@ echo -  5 = Change le répertoire d'installation de votre GTA5.
 echo -  6 = Lance le jeux GTA5.
 echo -  7 = Ouvre le repertoire d'installation de GTA5.
 echo -  8 = liste les differents sites fiable pour telecharger des mods GTA5
+echo -  9 = Ouvre le repertoire "scripts" pour y intaller vos mods
 echo.
 set /a command=99
 set /p command=Choix: 
@@ -81,6 +82,7 @@ if %command%==5 goto repertoirenotset
 if %command%==6 goto launch
 if %command%==7 goto opendir
 if %command%==8 goto dlmods
+if %command%==9 goto scripts
 if %command%==99 goto checkcom
 echo.
 echo choix incorrecte
@@ -293,6 +295,13 @@ echo.
 echo Choix incorrecte
 ping 0 -n 2 >nul
 goto dlmods
+
+:scripts
+cls
+echo Ouverture du repertoire scripts
+explorer %repertoire%\scripts
+pause
+goto deb
 
 :verifmaj
 cls
