@@ -3,17 +3,22 @@ color
 cls
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-set version=1.6.7
+set version=1.6.9
 echo.
 title Connexion a internet...
 echo Teste de la connexion a internet...
 ping google.fr -n 2 >nul
 if %ERRORLEVEL%==1 (
+	color c
+	cls
+	echo.
 	echo Aucune connexion a internet...
 	echo mise a jours impossible
+	set checkco=Desactiver
 	pause
 	goto load
 )
+set checkco=Activer
 title Verification des mises a jours...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://cyril59310.fr/download/dev/version', 'versionmodsGTA5')"
 set /p verifversion= < versionmodsGTA5
@@ -59,6 +64,7 @@ echo.
 echo Status des mods: %statusmods%
 echo Repertoire d'installation: %repertoire%
 echo version actuelle du jeux: %vjeux%
+echo Status de la connexion internet: %checkco%
 echo.
 echo -  0 = Ferme le programme.
 echo -  1 = Active les mods GTA5.
@@ -167,6 +173,7 @@ if exist %repertoire%\scripthookV.dll (
 
 :download
 cls
+if %checkco%==Desactiver goto errorco
 color 3
 echo.
 echo Ouverture d'une page internet... (dev-c.com/scripthookv)
@@ -277,6 +284,7 @@ goto noloader
 
 :dlmods
 cls
+if %checkco%==Desactiver goto errorco
 echo.
 echo Liste des sites pour telecharger des mods GTA5
 echo.
@@ -300,6 +308,15 @@ goto dlmods
 cls
 echo Ouverture du repertoire scripts
 explorer %repertoire%\scripts
+pause
+goto deb
+
+:errorco
+cls
+echo.
+color c
+echo Un probleme de connexion est survenue lors de l'initialisation du programme,
+echo si votre connexion a internet est revenue merci de relancer le programme.
 pause
 goto deb
 
