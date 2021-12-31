@@ -1,9 +1,9 @@
 @echo off
-color 
+color f
 cls
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-set version=1.6.9
+set version=1.6.9-b
 echo.
 title Connexion a internet...
 echo Teste de la connexion a internet...
@@ -75,7 +75,7 @@ echo -  5 = Change le répertoire d'installation de votre GTA5.
 echo -  6 = Lance le jeux GTA5.
 echo -  7 = Ouvre le repertoire d'installation de GTA5.
 echo -  8 = liste les differents sites fiable pour telecharger des mods GTA5
-echo -  9 = Ouvre le repertoire "scripts" pour y intaller vos mods
+echo -  9 = Ouvre le repertoire "scripts" pour y installer vos mods
 echo.
 set /a command=99
 set /p command=Choix: 
@@ -115,7 +115,7 @@ if exist %repertoire%\ScriptHookVoff.dll (
 cls
 color c
 echo.
-echo ATTENTION les mods sont déjà activé !
+echo ATTENTION les mods sont déj� activé !
 pause
 goto deb  
 
@@ -123,7 +123,7 @@ goto deb
 cls
 color c
 echo.
-echo ATTENTION les mods sont déjà désactiver !
+echo ATTENTION les mods sont déj� désactiver !
 pause
 goto deb
 
@@ -306,6 +306,13 @@ goto dlmods
 
 :scripts
 cls
+if not exist %repertoire%\scripts (
+	color c
+	echo.
+	echo Le repertoire scripts n'existe pas
+	pause
+   goto deb
+)
 echo Ouverture du repertoire scripts
 explorer %repertoire%\scripts
 pause
