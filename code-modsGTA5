@@ -3,7 +3,7 @@ color f
 cls
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-set version=1.6.9-b
+set version=1.7.0
 echo.
 title Connexion a internet...
 echo Teste de la connexion a internet...
@@ -37,25 +37,26 @@ if %checkrepertoire%=="" goto repertoirenotset
 :checkloader
 color 03
 set /p repertoire= < modsGTA5-repertoire.txt
+if not exist %repertoire%\PlayGTAV.exe goto repertoirenotset
 if not exist %repertoire%\ScriptHookV.dll (
 	if not exist %repertoire%\ScriptHookVoff.dll goto noloader
 )
 if not exist %repertoire%\ScriptHookVoff.dll (
 	if not exist %repertoire%\ScriptHookV.dll goto noloader
 )
-
 :deb
 chcp 65001
 cls
 color 03
 set version=%version%
+set checkunistall=false
 title Programme de gestion des mods GTA5 by Cyril59310 V%version%
 set /p repertoire= < modsGTA5-repertoire.txt
 if exist %repertoire%\ScriptHookV.dll (
 	set statusmods=Activer
 ) else if exist %repertoire%\ScriptHookVoff.dll ( 
 	      set statusmods=désactiver
-) else set statusmods=Inconnue
+) else set statusmods=ScriptHookV non installer
 
 set /p vjeux= < %repertoire%\version.txt
 echo.
@@ -74,8 +75,9 @@ echo -  4 = Update manuellement les fichiers ScriptHookV et dinput8.
 echo -  5 = Change le répertoire d'installation de votre GTA5.
 echo -  6 = Lance le jeux GTA5.
 echo -  7 = Ouvre le repertoire d'installation de GTA5.
-echo -  8 = liste les differents sites fiable pour telecharger des mods GTA5
-echo -  9 = Ouvre le repertoire "scripts" pour y installer vos mods
+echo -  8 = liste les differents sites fiable pour telecharger des mods GTA5.
+echo -  9 = Ouvre le repertoire "scripts" pour y installer vos mods.
+echo - 10 = Supprime les fichier du loader ScriptHookV. 
 echo.
 set /a command=99
 set /p command=Choix: 
@@ -89,6 +91,7 @@ if %command%==6 goto launch
 if %command%==7 goto opendir
 if %command%==8 goto dlmods
 if %command%==9 goto scripts
+if %command%==10 goto uninstall
 if %command%==99 goto checkcom
 echo.
 echo choix incorrecte
@@ -115,7 +118,7 @@ if exist %repertoire%\ScriptHookVoff.dll (
 cls
 color c
 echo.
-echo ATTENTION les mods sont déj� activé !
+echo ATTENTION les mods sont déj� activé !
 pause
 goto deb  
 
@@ -123,7 +126,7 @@ goto deb
 cls
 color c
 echo.
-echo ATTENTION les mods sont déj� désactiver !
+echo ATTENTION les mods sont déj� désactiver !
 pause
 goto deb
 
@@ -188,7 +191,7 @@ if %vtemp%==n goto deb
 :update
 cls
 echo.
-echo Suppression des anciens fichiers mods loader...
+echo Suppression des fichiers loader ScriptHookV...
 echo.
 ping 0 -n 3 >nul
 color 2
@@ -210,6 +213,8 @@ if exist %repertoire%\dinput8off.dll (
 )
 echo.
 echo Fichiers supprimés
+pause
+if %checkunistall%==true pause & goto deb
 echo Ouverture du répertoire d'installation...
 echo.
 :opendir
@@ -224,7 +229,7 @@ title initialisation du repertoire...
 color 4
 echo.
 attrib -H modsGTA5-repertoire.txt
-echo Repertoire GTA5 non initialisé...
+echo Repertoire GTA5 non initialisé ou fichiers du jeux introuvable...
 echo merci de spécifier le dossier d'installation de votre jeux GTA5
 echo.
 set repertoire=
@@ -306,17 +311,37 @@ goto dlmods
 
 :scripts
 cls
-if not exist %repertoire%\scripts (
-	color c
-	echo.
-	echo Le repertoire scripts n'existe pas
-	pause
-   goto deb
-)
+if not exist %repertoire%\scripts goto scripts2
+cls
+color 2
 echo Ouverture du repertoire scripts
 explorer %repertoire%\scripts
 pause
 goto deb
+
+:scripts2
+	color c
+	echo.
+	echo Le repertoire scripts n'existe pas
+	set scriptscheck=99
+	set /p scriptscheck=Le cree ? y/n: 
+	if %scriptscheck%==y mkdir %repertoire%\scripts & goto scripts
+	if %scriptscheck%==n goto deb
+	echo.
+	echo Choix incorrecte
+	ping 0 -n 2 >nul
+	goto scripts
+
+:uninstall
+cls
+echo.
+set /a tempo=99
+set /p tempo=Voulez vous vraimment supprimer le loader ScriptHookV ? y/n: 
+if %tempo%==y (
+	set checkunistall=true
+	goto update
+) 
+if %tempo%==n goto deb
 
 :errorco
 cls
