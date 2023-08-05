@@ -3,7 +3,7 @@ color f
 cls
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-set version=1.7.0
+set version=1.7.1
 echo.
 title Connexion a internet...
 echo Teste de la connexion a internet...
@@ -118,7 +118,7 @@ if exist %repertoire%\ScriptHookVoff.dll (
 cls
 color c
 echo.
-echo ATTENTION les mods sont déj� activé !
+echo ATTENTION les mods sont déjà activé !
 pause
 goto deb  
 
@@ -126,7 +126,7 @@ goto deb
 cls
 color c
 echo.
-echo ATTENTION les mods sont déj� désactiver !
+echo ATTENTION les mods sont déjà désactiver !
 pause
 goto deb
 
@@ -136,7 +136,16 @@ if exist %repertoire%\ScriptHookVoff.dll (
     echo.
     echo Activation des mods...
     rename %repertoire%\ScriptHookVoff.dll ScriptHookV.dll
-    rename %repertoire%\dinput8off.dll dinput8.dll
+	if exist %repertoire%\ScriptHookVoff.dll (
+		cls
+		color c
+		echo.
+		echo Impossible de modifier les fichiers, verifier les droits d'acces ou executer le programme en mode administrateur
+		echo.
+		pause
+		goto deb
+	)
+	rename %repertoire%\dinput8off.dll dinput8.dll
     ping 0 -n 1 >nul
     echo.
 	 color 2
@@ -158,7 +167,17 @@ if exist %repertoire%\scripthookV.dll (
     echo.
     echo désactivation des mods...
     rename %repertoire%\ScriptHookV.dll ScriptHookVoff.dll
-    rename %repertoire%\dinput8.dll dinput8off.dll
+	echo %ERRORLEVEL%
+	if exist %repertoire%\ScriptHookV.dll (
+		cls
+		color c
+		echo.
+		echo Impossible de modifier les fichiers, verifier les droits d'acces ou executer le programme en mode administrateur
+		echo.
+		pause
+		goto deb
+	)
+	rename %repertoire%\dinput8.dll dinput8off.dll
     ping 0 -n 1 >nul
     echo.
 	 color 2
@@ -197,6 +216,15 @@ ping 0 -n 3 >nul
 color 2
 if exist %repertoire%\ScriptHookV.dll (
 	del %repertoire%\ScriptHookV.dll
+	if exist %repertoire%\ScriptHookV.dll (
+		cls
+		color c
+		echo.
+		echo Impossible de supprimer les fichiers, verifier les droits d'acces ou executer le programme en mode administrateur
+		echo.
+		pause
+		goto deb
+	)
 	echo ScriptHookV.dll supprimer !
 )
 if exist %repertoire%\dinput8.dll (
@@ -205,6 +233,15 @@ if exist %repertoire%\dinput8.dll (
 )
 if exist %repertoire%\ScriptHookVoff.dll (
 	del %repertoire%\ScriptHookVoff.dll
+	if exist %repertoire%\ScriptHookV.dll (
+		cls
+		color c
+		echo.
+		echo Impossible de supprimer les fichiers, verifier les droits d'acces ou executer le programme en mode administrateur
+		echo.
+		pause
+		goto deb
+	)
 	echo ScriptHookVoff.dll supprimer ! 
 )
 if exist %repertoire%\dinput8off.dll (
@@ -325,7 +362,19 @@ goto deb
 	echo Le repertoire scripts n'existe pas
 	set scriptscheck=99
 	set /p scriptscheck=Le cree ? y/n: 
-	if %scriptscheck%==y mkdir %repertoire%\scripts & goto scripts
+	if %scriptscheck%==y (
+		mkdir %repertoire%\scripts
+		if not exist %repertoire%\scripts (
+		cls
+		color c
+		echo.
+		echo Impossible de supprimer les fichiers, verifier les droits d'acces ou executer le programme en mode administrateur
+		echo.
+		pause
+		goto deb
+		)
+		goto scripts
+	) 
 	if %scriptscheck%==n goto deb
 	echo.
 	echo Choix incorrecte
