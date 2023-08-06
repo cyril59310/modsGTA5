@@ -3,7 +3,7 @@ color f
 cls
 echo Chargement
 if exist modsGTA5.init.bat del modsGTA5.init.bat
-set version=1.7.1
+set version=1.7.1-b
 echo.
 title Connexion a internet...
 echo Teste de la connexion a internet...
@@ -167,7 +167,6 @@ if exist %repertoire%\scripthookV.dll (
     echo.
     echo désactivation des mods...
     rename %repertoire%\ScriptHookV.dll ScriptHookVoff.dll
-	echo %ERRORLEVEL%
 	if exist %repertoire%\ScriptHookV.dll (
 		cls
 		color c
